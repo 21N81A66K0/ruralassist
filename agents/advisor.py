@@ -1,6 +1,26 @@
 def generate_advice(knowledge: dict) -> dict:
-    category = knowledge["category"]
-    evidence = knowledge["evidence_chunks"]
+    """Generate final advice from synthesized knowledge."""
+    if knowledge is None:
+        return {
+            "category": "error",
+            "summary": "Error processing query.",
+            "advice_steps": ["Please try again with a clear question."]
+        }
+    
+    category = knowledge.get("category", "unknown")
+    evidence = knowledge.get("evidence_chunks", [])
+
+    # NEW: Safe fallback for irrelevant queries
+    if category == "out_of_domain":
+        return {
+            "category": "out_of_domain",
+            "summary": "Your query does not match agriculture or basic health topics.",
+            "advice_steps": [
+                "RuralAssist specializes only in crop and rural health guidance.",
+                "Please ask a question about crops, soil, pests, fertilizers, or simple health queries.",
+                "Example: 'My maize leaves are turning yellow' or 'How to treat dehydration?'"
+            ]
+        }
 
     # If no evidence, fallback safe response
     if not evidence:
@@ -14,7 +34,10 @@ def generate_advice(knowledge: dict) -> dict:
         }
 
     # Simple summarization logic (offline)
-    summary = " ".join(evidence)[:600] + "..."
+    try:
+        summary = " ".join(str(e) for e in evidence)[:600] + "..."
+    except Exception:
+        summary = "Evidence retrieved but could not summarize."
 
     # Agriculture-specific template
     if category == "agriculture":
@@ -39,18 +62,3 @@ def generate_advice(knowledge: dict) -> dict:
         "summary": summary,
         "advice_steps": advice
     }
-
-def generate_advice(knowledge: dict) -> dict:
-    category = knowledge["category"]
-
-    # NEW: Safe fallback for irrelevant queries
-    if category == "out_of_domain":
-        return {
-            "category": "out_of_domain",
-            "summary": "Your query does not match agriculture or basic health topics.",
-            "advice_steps": [
-                "RuralAssist specializes only in crop and rural health guidance.",
-                "Please ask a question about crops, soil, pests, fertilizers, or simple health queries.",
-                "Example: 'My maize leaves are turning yellow' or 'How to treat dehydration?'"
-            ]
-        }
