@@ -1,4 +1,4 @@
-# 🌾 RuralAssist: Offline Agent for Verified Rural Guidance
+# 🌾 RuralAssist: Offline Multi-Agent Intelligence for Low-Resource Communities
 
 ![GitHub License](https://img.shields.io/github/license/21N81A66K0/ruralassist)
 ![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)
@@ -59,7 +59,7 @@ Everything runs **fully offline** — making it ideal for underserved rural comm
 
 ---
 
-## 🚀 How to Run RuralAssist (Clean & Stylish Guide)
+## 🚀 How to Run RuralAssist 
 
 This guide shows how to set up and run the full offline multi-agent system on any computer.
 
